@@ -10,20 +10,14 @@ public class SupermercadoCovid {
 
         Incremento p1 = new Incremento();
         Incremento p2 = new Incremento();
-        Incremento p3 = new Incremento();
-        Incremento p4 = new Incremento();
         Decremento p5  = new Decremento();
         Decremento p6  = new Decremento();
-        Decremento p7  = new Decremento();
-        Decremento p8  = new Decremento();
+
         p1.start();
         p2.start();
-        p3.start();
-        p4.start();
         p5.start();
         p6.start();
-        p7.start();
-        p8.start();
+
 
     }
 
@@ -33,17 +27,18 @@ public class SupermercadoCovid {
         @Override
         public synchronized void run() {
             try {
-                Incremento.sleep((int) Math.random() * ((800 - 100 + 1) + 100));
+                Incremento.sleep((int)(Math.random() * ((800 - 100 + 1) + 100)));
 
-                while (aforo < tope && pasan == true) {
+                while (aforo > tope || !pasan) {
                     System.out.println("Me voy a la cola");
+                    pasan=false;
                     wait();
                     System.out.println("Termina el wait ");
                 }
+                pasan=false;
                 aforo++;
-                pasan = true;
                 System.out.println(aforo);
-
+                pasan = true;
 
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
@@ -56,7 +51,11 @@ public class SupermercadoCovid {
         @Override
         public synchronized void run() {
             try {
+                while (!pasan){
+                    wait();
+                }
                 Decremento.sleep((int) (Math.random() * ((800 - 100 + 1) + 100)));
+                pasan=false;
                 aforo--;
                 System.out.println(aforo);
                 System.out.println("Salgo pero tengo que avisar ");
