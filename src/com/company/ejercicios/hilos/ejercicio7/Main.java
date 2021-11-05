@@ -6,7 +6,7 @@ public class Main {
     private static boolean operar = true;
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         LeerCorreo ler = new LeerCorreo("Correo que se va a leer1");
         LeerCorreo ler2 = new LeerCorreo("Correo que se va a leer2");
@@ -14,8 +14,11 @@ public class Main {
         EnviarCorreo enviar2 = new EnviarCorreo("Correo que se va a enviar2");
 
         ler.start();
-       // enviar.start();
-
+        ler.join();
+        enviar.start();
+        enviar.join();
+        enviar2.start();
+        ler2.start();
 
     }
 
@@ -35,8 +38,9 @@ public class Main {
                capacidadBuzon--;
                System.out.println(capacidadBuzon);
                System.out.println("Lendo correo : " + getName());
-               notify();
                operar = true;
+               notify();
+
            }catch (InterruptedException e){
                System.out.println(e.getMessage());
            }
@@ -52,14 +56,17 @@ public class Main {
             public synchronized void run() {
                 try {
                     while (!operar || capacidadBuzon>=1) {
+                        System.out.println("entro en la cola");
                         wait();
+                        System.out.println("salgo de la cola");
                     }
                     operar = false;
-                   capacidadBuzon++;
+                    capacidadBuzon++;
                     System.out.println(capacidadBuzon);
                     System.out.println("Enviando  correo : " + getName());
-                    notify();
                     operar = true;
+                    notify();
+
                 } catch (InterruptedException e) {
                     System.out.println(e.getMessage());
 
