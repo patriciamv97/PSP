@@ -4,7 +4,7 @@ public class SupermercadoCovid {
 
     private static final int tope = 40;
     private static int aforo = 36;
-    private static boolean pasan;
+    private static boolean pasan=true;
 
     public static void main(String[] args) {
 
@@ -27,11 +27,10 @@ public class SupermercadoCovid {
         @Override
         public synchronized void run() {
             try {
-                Incremento.sleep((int)(Math.random() * ((800 - 100 + 1) + 100)));
+                //Incremento.sleep((int)(Math.random() * ((800 - 100 + 1) + 100)));
 
                 while (aforo > tope || !pasan) {
                     System.out.println("Me voy a la cola");
-                    pasan=false;
                     wait();
                     System.out.println("Termina el wait ");
                 }
@@ -50,21 +49,15 @@ public class SupermercadoCovid {
 
         @Override
         public synchronized void run() {
-            try {
-                while (!pasan){
-                    wait();
-                }
-                Decremento.sleep((int) (Math.random() * ((800 - 100 + 1) + 100)));
-                pasan=false;
-                aforo--;
-                System.out.println(aforo);
-                System.out.println("Salgo pero tengo que avisar ");
-                pasan = true;
-                notify();
-                System.out.println("Sali y ya notifique");
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-            }
+
+            //Decremento.sleep((int) (Math.random() * ((800 - 100 + 1) + 100)));
+            pasan=false;
+            aforo--;
+            System.out.println(aforo);
+            System.out.println("Salgo pero tengo que avisar ");
+            pasan = true;
+            notify();
+            System.out.println("Sali y ya notifique");
 
         }
     }
