@@ -2,7 +2,7 @@ package com.company.ejercicios.hilos.ejercicio7;
 
 public class Main {
 
-    private static int capacidadBuzon = 1;
+    private static String mensaje= null;
     private static boolean operar = true;
 
 
@@ -13,12 +13,14 @@ public class Main {
         EnviarCorreo enviar = new EnviarCorreo("Correo que se va a enviar1");
         EnviarCorreo enviar2 = new EnviarCorreo("Correo que se va a enviar2");
 
-        ler.start();
-        ler.join();
+       // ler.join();
         enviar.start();
+        ler.start();
+
         enviar.join();
         enviar2.start();
-        ler2.start();
+       enviar2.join();
+       ler2.start();
 
     }
 
@@ -30,14 +32,16 @@ public class Main {
         @Override
         public synchronized void run() {
            try {
-               while (!operar || capacidadBuzon<1) {
+               while (!operar || mensaje==null) {
+                   System.out.println("entro en la cola de lectura");
                    wait();
+                   System.out.println("salgo de la cola lectura");
+
                }
 
                operar = false;
-               capacidadBuzon--;
-               System.out.println(capacidadBuzon);
                System.out.println("Lendo correo : " + getName());
+               mensaje=null;
                operar = true;
                notify();
 
@@ -55,15 +59,14 @@ public class Main {
             @Override
             public synchronized void run() {
                 try {
-                    while (!operar || capacidadBuzon>=1) {
-                        System.out.println("entro en la cola");
+                    while (!operar || mensaje!=null) {
+                        System.out.println("entro en la cola de enviado");
                         wait();
-                        System.out.println("salgo de la cola");
+                        System.out.println("salgo de la cola de enviado");
                     }
                     operar = false;
-                    capacidadBuzon++;
-                    System.out.println(capacidadBuzon);
                     System.out.println("Enviando  correo : " + getName());
+                    mensaje=getName();
                     operar = true;
                     notify();
 
