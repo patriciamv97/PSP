@@ -1,4 +1,4 @@
-package com.company.EjerciciosClase;
+package com.company.ejercicios.hilos.ejercicio8;
 
 public class Ascensor {
 
@@ -47,7 +47,7 @@ public static class Llamada extends Thread {
 
             parado = false;
             System.out.println(getName());
-          //  sleep(3000);
+            sleep(3000);
             parado = true;
             notify();
 
