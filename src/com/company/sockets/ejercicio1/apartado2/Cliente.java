@@ -1,12 +1,10 @@
 package com.company.sockets.ejercicio1.apartado2;
 
-import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Cliente {
@@ -20,24 +18,32 @@ public class Cliente {
 
         cliente.connect(addr);
 
-        InputStream entrada= cliente.getInputStream();
-        OutputStream salida= cliente.getOutputStream();
+        InputStream entrada = cliente.getInputStream();
+        OutputStream salida = cliente.getOutputStream();
 
         System.out.println("Enviando mensaje");
 
         System.out.println("Incio de la conversación");
 
         byte[] ms;
-        String mensaje;
+        String mensaje="";
 
-        do {
+        while (!mensaje.equalsIgnoreCase("fin")) {
             mensaje = sc.nextLine();
+            System.out.println("Mensaje enviado ");
             salida.write(mensaje.getBytes());
-            System.out.println("Mensaje enviado");
             ms = new byte[140];
             entrada.read(ms);
+            if (mensaje.equalsIgnoreCase("fin")){
+                break;
+            }
+
+
+
             System.out.println("Servidor: " + new String(ms).trim());
-        }while (!mensaje.equalsIgnoreCase("fin"));
+
+
+        }
 
         System.out.println("Cerrando el socket cliente");
         cliente.close();
