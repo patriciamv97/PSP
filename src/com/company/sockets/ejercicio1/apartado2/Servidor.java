@@ -20,7 +20,7 @@ public class Servidor {
 
         //Esta clase implementa una dirección de socorro IP (dirección IP+número de puerto)También puede ser un par (nombre de host+número de puerto),
         // en cuyo caso se intentará resolver el nombre de host
-        InetSocketAddress addr = new InetSocketAddress("localhost",6666);
+        InetSocketAddress addr = new InetSocketAddress("localhost",2000);
         serverSocket.bind(addr);
 
         //Aceptamos las conexiones
@@ -31,14 +31,16 @@ public class Servidor {
 
 
         byte[] mensaje;
+        String ms;
         do {
             mensaje = new byte[140];
             entrada.read(mensaje);
-            System.out.println("Mensaje recibido: " + new String(mensaje).trim());
-            String ms = sc.nextLine();
+            System.out.println("Cliente: " + new String(mensaje).trim());
+            ms = sc.nextLine();
             salida.write(ms.getBytes());
             System.out.println("Mensaje enviado");
-        }while (new String(mensaje).equalsIgnoreCase("fin"));
+
+       }while (!ms.equalsIgnoreCase("fin"));
 
 
         System.out.println("Cerrando el nuevo socket");

@@ -16,7 +16,7 @@ public class Cliente {
 
         Socket cliente = new Socket();
 
-        InetSocketAddress addr = new InetSocketAddress("localhost", 6666);
+        InetSocketAddress addr = new InetSocketAddress("localhost", 2000);
 
         cliente.connect(addr);
 
@@ -28,14 +28,16 @@ public class Cliente {
         System.out.println("Incio de la conversación");
 
         byte[] ms;
+        String mensaje;
+
         do {
-            String mensaje = sc.nextLine();
+            mensaje = sc.nextLine();
             salida.write(mensaje.getBytes());
             System.out.println("Mensaje enviado");
             ms = new byte[140];
             entrada.read(ms);
-            System.out.println("Mensaje recibido: " + new String(ms).trim());
-        }while (new String(ms).equalsIgnoreCase("fin"));
+            System.out.println("Servidor: " + new String(ms).trim());
+        }while (!mensaje.equalsIgnoreCase("fin"));
 
         System.out.println("Cerrando el socket cliente");
         cliente.close();
