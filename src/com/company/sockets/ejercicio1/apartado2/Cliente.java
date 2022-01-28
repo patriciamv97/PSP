@@ -34,12 +34,9 @@ public class Cliente {
             salida.write(mensaje.getBytes());
             ms = new byte[140];
             entrada.read(ms);
-            if (mensaje.equalsIgnoreCase("fin")){
+            if (new String(ms).trim().equalsIgnoreCase("fin")){
                 break;
             }
-
-
-
             System.out.println("Servidor: " + new String(ms).trim());
 
 

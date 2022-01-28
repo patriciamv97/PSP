@@ -36,6 +36,9 @@ public class Servidor {
             mensaje = new byte[140];
             entrada.read(mensaje);
             System.out.println("Cliente: " + new String(mensaje).trim());
+            if (new String(mensaje).trim().equalsIgnoreCase("fin")){
+                break;
+            }
             ms = sc.nextLine();
             salida.write(ms.getBytes());
             System.out.println("Mensaje enviado");
